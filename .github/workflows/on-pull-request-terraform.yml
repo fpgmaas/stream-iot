@@ -4,7 +4,7 @@ on:
     paths:
       - 'terraform/**'
 
-name: On Pull Request
+name: "Terraform: On pull request"
 
 jobs:
   terraform:

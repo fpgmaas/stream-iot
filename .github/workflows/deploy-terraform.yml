@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
     branches: [main]
 
-name: "Infra: Deploy infrastructure"
+name: "Terraform: Deploy infrastructure"
 
 jobs:
   terraform:
