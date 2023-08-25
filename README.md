@@ -12,6 +12,11 @@ az ad sp create-for-rbac \
     --scopes "/subscriptions/$SUBSCRIPTION_ID" > credentials.json
 ```
 
+under Active Directory > App registrations > InfrastructureAccount > API Permissions > Microsoft Graph > Application Permissions > Application.ReadWrite.All
+Also `Grant admin consent for Default Directory`.
+
+set github secrets
+
 ```
 echo "GitHub secrets:"
 echo AZURE_AD_CLIENT_ID = `cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["appId"])'`
@@ -20,12 +25,11 @@ echo AZURE_AD_TENANT_ID = `cat credentials.json | python -c 'import json,sys;obj
 echo AZURE_SUBSCRIPTION_ID = `az account show --query id -o tsv`
 ```
 
+run deploy terraform state bucket workflow. (to get credentials locally):
+
 ```
 export ARM_CLIENT_ID=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["appId"])'`
 export ARM_CLIENT_SECRET=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["password"])'`
 export ARM_TENANT_ID=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["tenant"])'`
 export ARM_SUBSCRIPTION_ID=`az account show --query id -o tsv`
 ```
-
-under Active Directory > App registrations > InfrastructureAccount > API Permissions > Microsoft Graph > Application Permissions > Application.ReadWrite.All
-Also `Grant admin consent for Default Directory`.
