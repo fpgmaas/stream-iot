@@ -4,16 +4,13 @@
 az login
 
 export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-export SERVICE_PRINCIPAL_NAME="InfrastructureAccount"
+export SERVICE_PRINCIPAL_NAME="GitHubServicePrincipal"
  
 az ad sp create-for-rbac \
     --name $SERVICE_PRINCIPAL_NAME \
     --role "Owner" \
     --scopes "/subscriptions/$SUBSCRIPTION_ID" > credentials.json
 ```
-
-under Active Directory > App registrations > InfrastructureAccount > API Permissions > Microsoft Graph > Application Permissions > Application.ReadWrite.All
-Also `Grant admin consent for Default Directory`.
 
 set github secrets
 

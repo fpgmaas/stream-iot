@@ -2,7 +2,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-  - 'terraform/**'
+      - 'terraform/**'
 
 name: On Pull Request
 
