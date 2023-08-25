@@ -39,7 +39,7 @@ jobs:
         id: init
         run: |
           set -a 
-          source ../.env.config
+          source .env.config
           terraform init \
             -backend-config="resource_group_name=$TF_VAR_state_resource_group_name" \
             -backend-config="storage_account_name=$TF_VAR_state_storage_account_name"
