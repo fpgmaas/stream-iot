@@ -1,4 +1,4 @@
-name: Deploy docker image
+name: Push docker image
 
 on:
   workflow_dispatch:
