@@ -16,6 +16,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_A2m_v2"
+    temporary_name_for_rotation = "defaultold"
   }
 
   identity {
