@@ -1,5 +1,7 @@
 # kafka-dev
 
+https://dev.to/azure/kafka-on-kubernetes-the-strimzi-way-part-2-1210
+
 ```
 az login
 
@@ -29,4 +31,28 @@ export ARM_CLIENT_ID=`cat credentials.json | python -c 'import json,sys;obj=json
 export ARM_CLIENT_SECRET=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["password"])'`
 export ARM_TENANT_ID=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["tenant"])'`
 export ARM_SUBSCRIPTION_ID=`az account show --query id -o tsv`
+```
+
+deploy infra
+
+```
+az aks get-credentials --resource-group floapp001-rg --name floapp001aks
+```
+
+
+```
+kubectl create namespace kafka
+kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
+kubectl apply -n kafka -f kafka/values.yaml
+```
+
+```
+kubectl get service/${CLUSTER_NAME}-kafka-external-bootstrap --output=jsonpath='{.status.loadBalancer.ingress[0].ip}' -n kafka
+```
+ip: 20.23.114.182
+
+```
+export CLUSTER_NAME=my-cluster
+kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.crt
+kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 --decode > ca.password
 ```
