@@ -56,3 +56,6 @@ export CLUSTER_NAME=my-cluster
 kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.crt
 kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 --decode > ca.password
 ```
+
+Set ACR_REGISTRY_NAME variable on Github repo
+also set APP_NAME

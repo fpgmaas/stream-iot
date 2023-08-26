@@ -16,4 +16,4 @@ RUN poetry install --no-interaction --no-ansi --no-root --no-dev
 # Copy Python code to the Docker image
 COPY floapp001 /code/example/
 
-ENV PYTHONPATH "${PYTHONPATH}:/floapp001"
+ENV PYTHONPATH "${PYTHONPATH}:/app"

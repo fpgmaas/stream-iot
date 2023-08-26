@@ -2,6 +2,7 @@ name: "Terraform: Deploy state bucket"
 
 on:
   workflow_dispatch:
+    branches: [main]
 
 jobs:
   deploy:

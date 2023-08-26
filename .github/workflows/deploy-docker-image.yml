@@ -1,0 +1,34 @@
+name: Deploy docker image
+
+on:
+  workflow_dispatch:
+    branches: [main]
+
+jobs:
+  push-to-acr:
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./python
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ vars.ACR_REGISTRY_NAME }}.azurecr.io
+          username: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          password: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ vars.APP_NAME }} .
+
+      - name: Push Docker image to Azure Container Registry
+        run: |
+          docker tag ${{ vars.APP_NAME }} ${{ vars.ACR_REGISTRY_NAME }}.azurecr.io/${{ vars.APP_NAME }}:latest
+          docker push -a ${{ vars.ACR_REGISTRY_NAME }}.azurecr.io/${{ vars.APP_NAME }}
