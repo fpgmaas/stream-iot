@@ -21,7 +21,7 @@ def generate_random_word():
 def main():
     # Kafka configuration - update this based on your setup
     conf = {
-        'bootstrap.servers': 'kafka:9094'  # Broker address
+        'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092'  # Broker address
         # 'security.protocol': 'ssl',
         # 'ssl.ca.location': '../ca.crt'
     }
