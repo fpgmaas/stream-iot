@@ -57,6 +57,8 @@ kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca
 kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 --decode > ca.password
 ```
 
+
+
 Set ACR_REGISTRY_NAME variable on Github repo
 also set APP_NAME
 
@@ -79,7 +81,9 @@ export STORAGE_ACCOUNT_KEY=$(az storage account keys list \
 -o tsv)
 
 kubectl create secret generic -n airflow storage-account-credentials \
---from-literal azurestorageaccountname=exampleairflowsa \
+--from-literal azurestorageaccountname=floapp001 \
 --from-literal azurestorageaccountkey=$STORAGE_ACCOUNT_KEY \
 --type=Opaque
 ```
+
+az resource update --ids /subscriptions/${SUBSCRIPTION_ID}/resourcegroups/floapp001-rg/providers/Microsoft.ContainerService/managedClusters/floapp001aks/agentpools/default
