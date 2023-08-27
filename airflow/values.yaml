@@ -1,0 +1,59 @@
+# Full template: https://github.com/apache/airflow/blob/main/chart/values.yaml
+
+# Select certain nodes for airflow pods.
+nodeSelector:
+  agentpool: default
+
+# Airflow executor
+executor: "KubernetesExecutor"
+
+# Environment variables for all airflow containers
+env:
+  - name: ENVIRONMENT
+    value: dev
+
+extraEnv: |
+  - name: AIRFLOW__CORE__DEFAULT_TIMEZONE
+    value: 'Europe/Amsterdam'
+
+# Configuration for postgresql subchart
+# Not recommended for production! Instead, spin up your own Postgresql server and use the `data` attribute in this
+# yaml file.
+postgresql:
+  enabled: true
+
+# Enable pgbouncer. See https://airflow.apache.org/docs/helm-chart/stable/production-guide.html#pgbouncer
+pgbouncer:
+  enabled: true
+
+dags:
+  gitSync:
+    enabled: true
+    repo: git@github.com:fpgmaas/kafka-dev.git
+    branch: main
+    rev: HEAD
+    depth: 1
+    maxFailures: 0
+    subPath: "dags"
+    sshKeySecret: airflow-git-ssh-secret
+    knownHosts: |
+      github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+
+logs:
+  persistence:
+    enabled: true
+    existingClaim: pvc-airflow-logs
+    storageClassName: azureblob-fuse-premium
+
+# We disable the log groomer sidecar because we use Azure Blob Storage for logs, with lifecyle policy set.
+triggerer:
+  logGroomerSidecar:
+    enabled: false
+
+scheduler:
+  logGroomerSidecar:
+    enabled: false
+
+workers:
+  logGroomerSidecar:
+    enabled: false

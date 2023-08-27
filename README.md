@@ -59,3 +59,27 @@ kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca
 
 Set ACR_REGISTRY_NAME variable on Github repo
 also set APP_NAME
+
+push container to ACR workflow
+
+Install Airflow
+
+deploy key
+
+ssh-keygen -t rsa -b 4096 -C "your@email.com"
+cat ~/.ssh/airflowsshkey.pub
+`Settings > Deploy Keys > Add deploy key`
+kubectl create namespace airflow
+
+```
+export STORAGE_ACCOUNT_KEY=$(az storage account keys list \
+-g floapp001-rg \
+-n floapp001 \
+--query '[0]'.value \
+-o tsv)
+
+kubectl create secret generic -n airflow storage-account-credentials \
+--from-literal azurestorageaccountname=exampleairflowsa \
+--from-literal azurestorageaccountkey=$STORAGE_ACCOUNT_KEY \
+--type=Opaque
+```
