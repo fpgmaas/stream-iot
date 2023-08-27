@@ -19,11 +19,9 @@ def generate_random_word():
     return random.choice(word_list)
 
 def main():
-    # Kafka configuration - update this based on your setup
     conf = {
-        'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092'  # Broker address
-        # 'security.protocol': 'ssl',
-        # 'ssl.ca.location': '../ca.crt'
+        'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092',
+        'group.id': 'word_group',
     }
 
     producer = Producer(conf)
@@ -31,7 +29,7 @@ def main():
     try:
         while True:
             word = generate_random_word()
-            producer.produce('words_topic', key=str(time.time()), value=word, callback=delivery_report)
+            producer.produce('words', key=str(time.time()), value=word, callback=delivery_report)
 
             # Wait for any outstanding messages to be delivered and delivery reports to be received.
             producer.poll(0)

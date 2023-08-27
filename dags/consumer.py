@@ -19,5 +19,5 @@ with DAG(
     simple_task = KubernetesPodOperator(
         task_id="produce",
         image="floapp001acr.azurecr.io/floapp001:latest",
-        cmds=["python", "app/producer.py"],
+        cmds=["python", "app/consumer.py"],
     )

@@ -2,19 +2,15 @@ from confluent_kafka import Consumer, KafkaError
 import time
 
 def main():
-    # Kafka configuration - update this based on your setup
     conf = {
-        'bootstrap.servers': '20.23.114.182:9094',  # Broker address
+        'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092',
         'group.id': 'word_group',
-        'auto.offset.reset': 'earliest',
-        'security.protocol': 'ssl',
-        'ssl.ca.location': '../ca.crt'
     }
 
     consumer = Consumer(conf)
 
     # Subscribe to the topic
-    consumer.subscribe(['words_topic'])
+    consumer.subscribe(['words'])
 
     try:
         while True:
