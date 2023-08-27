@@ -9,7 +9,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id="producer",
+    dag_id="consumer",
     schedule_interval=None,
     default_args=default_args,
     catchup=False,
@@ -17,7 +17,7 @@ with DAG(
     max_active_runs=1,
 ) as dag:
     simple_task = KubernetesPodOperator(
-        task_id="produce",
+        task_id="consume",
         image="floapp001acr.azurecr.io/floapp001:latest",
         cmds=["python", "app/consumer.py"],
     )
