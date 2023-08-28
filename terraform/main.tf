@@ -24,3 +24,10 @@ module "aks" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg.name
 }
+
+module "cosmosdb" {
+  source              = "./modules/cosmosdb"
+  name                = "${var.app_name}cosmosdb"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+}

@@ -1,6 +1,7 @@
 from confluent_kafka import Producer
 import numpy as np
 import time
+from app.config import Config
 
 np.random.seed(42)
 
@@ -32,13 +33,10 @@ def delivery_report(err, msg) -> None:
 
 
 def main():
+    config = Config.get()
+    producer = Producer(config)
+
     generator = RandomSensorDataGenerator(n_samples=N_SAMPLES)
-
-    conf = {
-        "bootstrap.servers": "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092",
-    }
-
-    producer = Producer(conf)
 
     try:
         while True:

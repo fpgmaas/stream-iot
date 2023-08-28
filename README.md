@@ -15,7 +15,7 @@ Start by creating a Service Principal on Azure:
 az login
 
 export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
- 
+
 az ad sp create-for-rbac \
     --name GitHubServicePrincipal \
     --role "Owner" \
@@ -94,20 +94,46 @@ az resource update --ids /subscriptions/${SUBSCRIPTION_ID}/resourcegroups/floapp
 
 
 
+## Local development
 
-## Useful commands:
-
-Get public IP of your cluster.
+Get public IP of your cluster. Add that to python/app/config.py in the LocalConfig.
 
 ```
 export CLUSTER_NAME=my-cluster
 kubectl get service/$CLUSTER_NAME-kafka-external-bootstrap --output=jsonpath='{.status.loadBalancer.ingress[0].ip}' -n kafka
 ```
 
-get certificate and password:
+
+get certificate, Make sure they are in .gitignore!
 
 ```
 export CLUSTER_NAME=my-cluster
 kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.crt
-kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 --decode > ca.password
+```
+
+```
+cd python
+docker build -t floapp001 .
+
+# Run producer
+docker run \
+    -e ENVIRONMENT=local \
+    -v $(pwd)/../ca.crt:/code/ca.crt floapp001 \
+    poetry run python -u app/producer.py
+
+
+# Run consumer
+docker run \
+    -e ENVIRONMENT=local \
+    -v $(pwd)/../ca.crt:/code/ca.crt floapp001 \
+    poetry run python -u app/consumer.py
+```
+
+interactive mode:
+
+```
+docker run --rm -it \
+    -e ENVIRONMENT=local \
+    -v $(pwd)/../ca.crt:/code/ca.crt \
+    --entrypoint bash floapp001
 ```
