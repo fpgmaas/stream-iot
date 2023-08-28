@@ -20,15 +20,15 @@ jobs:
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ vars.ACR_REGISTRY_NAME }}.azurecr.io
+          login-server: floapp001acr.azurecr.io
           username: ${{ secrets.AZURE_AD_CLIENT_ID }}
           password: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ vars.APP_NAME }} .
+          docker build -t floapp001 .
 
       - name: Push Docker image to Azure Container Registry
         run: |
-          docker tag ${{ vars.APP_NAME }} ${{ vars.ACR_REGISTRY_NAME }}.azurecr.io/${{ vars.APP_NAME }}:latest
-          docker push -a ${{ vars.ACR_REGISTRY_NAME }}.azurecr.io/${{ vars.APP_NAME }}
+          docker tag floapp001 floapp001acr.azurecr.io/floapp001:latest
+          docker push -a floapp001acr.azurecr.io/floapp001

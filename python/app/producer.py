@@ -1,8 +1,28 @@
 from confluent_kafka import Producer
+import numpy as np
 import time
-import random
 
-def delivery_report(err, msg):
+np.random.seed(42)
+
+N_SAMPLES = 20
+
+class RandomSensorDataGenerator:
+
+    def __init__(self, n_samples: int):
+        self.n_samples = n_samples
+        self.means = np.random.uniform(10, 90, N_SAMPLES)
+        self.std_devs = np.random.uniform(1, 10, N_SAMPLES)
+
+    def generate_data(self):
+        random_numbers = np.random.normal(
+            self.means,
+            self.std_devs
+        )
+        clipped_numbers = np.clip(random_numbers, 0, 100)
+        result_string = ','.join(map(str, clipped_numbers))
+        return result_string
+
+def delivery_report(err, msg) -> None:
     """
     Callback function after message delivery.
     """
@@ -11,26 +31,20 @@ def delivery_report(err, msg):
     else:
         print(f'Message delivered to {msg.topic()} [{msg.partition()}]')
 
-def generate_random_word():
-    """
-    Generate a random word from a predefined list.
-    """
-    word_list = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew"]
-    return random.choice(word_list)
-
 def main():
+    generator = RandomSensorDataGenerator()
+
     conf = {
         'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092',
-        'group.id': 'word_group',
+        'group.id': 'sensor_group',
     }
 
     producer = Producer(conf)
 
     try:
         while True:
-            word = generate_random_word()
-            producer.produce('words', key=str(time.time()), value=word, callback=delivery_report)
-
+            sensor_data = generator.generate_data()
+            producer.produce('sensors', key=str(time.time()), value=sensor_data, callback=delivery_report)
             # Wait for any outstanding messages to be delivered and delivery reports to be received.
             producer.poll(0)
             time.sleep(1)

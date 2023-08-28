@@ -4,13 +4,13 @@ import time
 def main():
     conf = {
         'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092',
-        'group.id': 'word_group',
+        'group.id': 'sensor_group',
     }
 
     consumer = Consumer(conf)
 
     # Subscribe to the topic
-    consumer.subscribe(['words'])
+    consumer.subscribe(['sensors'])
 
     try:
         while True:
