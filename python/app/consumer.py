@@ -17,6 +17,7 @@ def parse_sensor_data(data_str: str):
 
 
 def main():
+    print(os.environ)
     COSMOSDB_CONNECTION_STRING = os.environ.get("COSMOSDB_CONNECTION_STRING")
     print(COSMOSDB_CONNECTION_STRING[:20])
     client = pymongo.MongoClient(COSMOSDB_CONNECTION_STRING)

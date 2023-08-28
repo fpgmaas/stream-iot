@@ -1,20 +1,13 @@
 from datetime import datetime
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow.kubernetes.secret import Secret
-
-cosmosdb_connection_string = Secret(
-    deploy_type="env",
-    deploy_target="COSMOSDB_CONNECTION_STRING",
-    secret="cosmosdb-connection-string",  # noqa: S106
-    key="cosmosdb-connection-string",
-)
+from kubernetes.client import models as k8s
 
 default_args = {
     "retries": 1,
     "start_date": datetime(2022, 1, 1),
     "image_pull_policy": "Always",
-    "secrets": [cosmosdb_connection_string],
+    "env_vars": [k8s.V1EnvVar(name="ENVIRONMENT", value="cluster")],
 }
 
 with DAG(
