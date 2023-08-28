@@ -32,7 +32,7 @@ def delivery_report(err, msg) -> None:
         print(f'Message delivered to {msg.topic()} [{msg.partition()}]')
 
 def main():
-    generator = RandomSensorDataGenerator()
+    generator = RandomSensorDataGenerator(n_samples=N_SAMPLES)
 
     conf = {
         'bootstrap.servers': 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092',
