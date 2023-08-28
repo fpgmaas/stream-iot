@@ -1,8 +1,28 @@
 from confluent_kafka import Consumer, KafkaError
 from app.config import Config
+import pymongo
+import os
+
+
+def parse_sensor_data(data_str: str):
+    """
+    Parse a comma-separated string of sensor values into a dictionary.
+
+    Example:
+    >>> parse_sensor_data("1,2,4")
+    {'sensor_1': 1, 'sensor_2': 2, 'sensor_3': 4}
+    """
+    data_list = data_str.split(",")
+    return {f"sensor_{idx+1}": float(value) for idx, value in enumerate(data_list)}
 
 
 def main():
+    COSMOSDB_CONNECTION_STRING = os.environ.get("COSMOSDB_CONNECTION_STRING")
+    print(COSMOSDB_CONNECTION_STRING[:20])
+    client = pymongo.MongoClient(COSMOSDB_CONNECTION_STRING)
+    db = client["floapp001cosmosdb"]
+    collection = db.sensors
+
     config = Config.get()
     config["group.id"] = "sensor_group"
     consumer = Consumer(config)
@@ -17,18 +37,16 @@ def main():
             if msg is None:
                 continue
             if msg.error():
-                # Error or event
                 if msg.error().code() == KafkaError._PARTITION_EOF:
-                    # End of partition event - not an error
                     print(
                         f"Reached the end of partition {msg.partition()} at offset {msg.offset()}"
                     )
                 else:
-                    # Print out the error
                     print(f"Error while consuming message: {msg.error()}")
             else:
-                # Proper message
                 print(f"Received message (key: {msg.key()}): {msg.value()}")
+                document = parse_sensor_data(msg.value().decode("utf-8"))
+                collection.insert_one(document)
 
     except KeyboardInterrupt:
         pass

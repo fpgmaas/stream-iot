@@ -1,5 +1,6 @@
 credentials.json
 .vscode
+.env
 
 ca.crt
 ca.password

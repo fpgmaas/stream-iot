@@ -20,10 +20,3 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
     name = "EnableMongo"
   }
 }
-
-resource "azurerm_cosmosdb_mongo_database" "mongodb" {
-  name                = "cosmosmongodb"
-  resource_group_name = var.resource_group_name
-  account_name        = azurerm_cosmosdb_account.cosmosdb.name
-  throughput          = 400
-}
