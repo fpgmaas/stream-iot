@@ -2,6 +2,7 @@ from confluent_kafka import Consumer, KafkaError
 from app.config import Config
 import pymongo
 import os
+import datetime as dt
 
 
 def parse_sensor_data(data_str: str):
@@ -17,9 +18,7 @@ def parse_sensor_data(data_str: str):
 
 
 def main():
-    print(os.environ)
     COSMOSDB_CONNECTION_STRING = os.environ.get("COSMOSDB_CONNECTION_STRING")
-    print(COSMOSDB_CONNECTION_STRING[:20])
     client = pymongo.MongoClient(COSMOSDB_CONNECTION_STRING)
     db = client["floapp001cosmosdb"]
     collection = db.sensors
@@ -47,6 +46,9 @@ def main():
             else:
                 print(f"Received message (key: {msg.key()}): {msg.value()}")
                 document = parse_sensor_data(msg.value().decode("utf-8"))
+                document["timestamp"] = dt.datetime.fromtimestamp(
+                    float(msg.key().decode("utf-8"))
+                ).strftime("%Y-%m-%d %H:%M:%S")
                 collection.insert_one(document)
 
     except KeyboardInterrupt:
