@@ -46,9 +46,9 @@ def main():
             else:
                 print(f"Received message (key: {msg.key()}): {msg.value()}")
                 document = parse_sensor_data(msg.value().decode("utf-8"))
-                document["timestamp"] = dt.datetime.fromtimestamp(
-                    float(msg.key().decode("utf-8"))
-                ).strftime("%Y-%m-%d %H:%M:%S")
+                timestamp = dt.datetime.fromtimestamp(float(msg.key().decode("utf-8")))
+                document["timestamp"] = timestamp
+                document["timestamp_str"] = timestamp.strftime("%Y-%m-%d %H:%M:%S")
                 collection.insert_one(document)
 
     except KeyboardInterrupt:
