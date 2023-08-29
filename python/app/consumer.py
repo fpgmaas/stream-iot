@@ -5,6 +5,14 @@ import os
 import datetime as dt
 
 
+def parse_message_into_document(message: dict):
+    document = parse_sensor_data(message.value().decode("utf-8"))
+    timestamp = dt.datetime.fromtimestamp(float(message.key().decode("utf-8")))
+    document["timestamp"] = timestamp
+    document["timestamp_str"] = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    return document
+
+
 def parse_sensor_data(data_str: str):
     """
     Parse a comma-separated string of sensor values into a dictionary.
@@ -18,8 +26,8 @@ def parse_sensor_data(data_str: str):
 
 
 def main():
-    COSMOSDB_CONNECTION_STRING = os.environ.get("COSMOSDB_CONNECTION_STRING")
-    client = pymongo.MongoClient(COSMOSDB_CONNECTION_STRING)
+    cosmosdb_connection_string = os.environ.get("COSMOSDB_CONNECTION_STRING")
+    client = pymongo.MongoClient(cosmosdb_connection_string)
     db = client["floapp001cosmosdb"]
     collection = db.sensors
 
@@ -45,10 +53,7 @@ def main():
                     print(f"Error while consuming message: {msg.error()}")
             else:
                 print(f"Received message (key: {msg.key()}): {msg.value()}")
-                document = parse_sensor_data(msg.value().decode("utf-8"))
-                timestamp = dt.datetime.fromtimestamp(float(msg.key().decode("utf-8")))
-                document["timestamp"] = timestamp
-                document["timestamp_str"] = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                document = parse_message_into_document(msg)
                 collection.insert_one(document)
 
     except KeyboardInterrupt:

@@ -1,0 +1,40 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    scrapeInterval: "10s"
+    podAntiAffinity: "hard"
+    nodeSelector:
+      agentpool: default
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          storageClassName: "managed-csi"
+          resources:
+            requests:
+              storage: 20Gi
+
+prometheusOperator:
+  nodeSelector:
+    agentpool: default
+
+alertmanager:
+  alertManagerSpec:
+    nodeSelector:
+      agentpool: default
+
+grafana:
+  defaultDashboardsTimezone: Europe/Luxembourg
+  adminPassword: admin
+  nodeSelector:
+    agentpool: default
+
+kubeStateMetrics:
+  enabled: true
+
+kube-state-metrics:
+  nodeSelector:
+    agentpool: default
+  extraArgs:
+    - --metric-labels-allowlist=pods=[dag_id,task_id],nodes=[agentpool, type, size]
