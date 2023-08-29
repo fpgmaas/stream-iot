@@ -6,9 +6,25 @@ This directory contains Python code for a Kafka producer that generates some ver
 
 Push the Docker image to the Container Registry by running the `Push Docker image` workflow in GitHub Actions.
 
+Also add `MONGODB_CONNECTION_STRING` as a secret in Kubernetes:
+
+```sh
+export MONGODB_CONNECTION_STRING=$(az cosmosdb keys list \
+    --name streamiotcosmosdb \
+    --resource-group streamiot-rg \
+    --type connection-strings \
+    --query "connectionStrings[?description=='Primary MongoDB Connection String'].connectionString" \
+    --output tsv)
+
+kubectl create secret generic \
+    -n airflow cosmosdb-connection-string \
+    --from-literal=cosmosdb-connection-string=$MONGODB_CONNECTION_STRING
+```
+
 ## Local development
 
-Locally, add it to `python/.env`:
+It is also possible to run the Kafka consumer and producer locally using Docker. To do so, start by
+creating the file `python/.env` with the following contents:
 
 ```
 export MONGODB_CONNECTION_STRING=$(az cosmosdb keys list \
@@ -22,15 +38,8 @@ echo "MONGODB_CONNECTION_STRING=\"$MONGODB_CONNECTION_STRING\"" > .env
 echo "ENVIRONMENT=local" >> .env
 ```
 
-Also add it as kubernetes secret in airflow namespace.
-
-```
-kubectl create secret generic \
-    -n airflow cosmosdb-connection-string \
-    --from-literal=cosmosdb-connection-string=$MONGODB_CONNECTION_STRING
-```
-
-Additionally, add the external IP of the Kafka cluster's load balancer to `LocalConfig` in `python/app/config.py`. It can be found with the following command:
+Additionally, add the external IP of the Kafka cluster's load balancer to `LocalConfig` in `python/app/config.py`.
+It can be found with the following command:
 
 ```sh
 export CLUSTER_NAME=my-cluster
