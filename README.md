@@ -1,6 +1,6 @@
 # kafka-dev
 
-![Alt text](./architecture.png)
+![Alt text](./architecture2.png)
 
 ## Prerequisites
 
