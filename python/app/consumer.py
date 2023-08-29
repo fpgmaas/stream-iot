@@ -29,6 +29,13 @@ def parse_sensor_data(data_str: str):
 
 
 def main():
+    """
+    Consumes messages from Kafka and stores them into MongoDB.
+
+    Note: This implementation processes messages one-by-one for simplicity. For higher throughput,
+    consider batch processing to accumulate and insert messages in bulk.
+    """
+
     # Connect to MongoDB
     mongodb_connection_string = os.environ.get("MONGODB_CONNECTION_STRING")
     client = pymongo.MongoClient(mongodb_connection_string)
