@@ -2,13 +2,26 @@
 
 Welcome to **stream-iot**! This project contains an example of an end-to-end workflow for real-time IoT data processing. This is done by mocking sensor data, channeling it through Kafka, and then storing the parsed data in a MongoDB database.
 
-**Feedback & Collaboration:** I hope that this project can help others get started on similar projects. At the same time, I am sure I can learn from others viewing this project. If you have suggestions, ideas, or spot something amiss, please [create an issue](https://github.com/fpgmaas/stream-iot/issues/new) in this repository.
+I hope that this project can help others get started on similar projects. At the same time, I am sure I can learn from others viewing this project. If you have feedback or improvement suggestions, please [create an issue](https://github.com/fpgmaas/stream-iot/issues/new) in this repository.
 
----
+
+## Tools & Technologies
+
+* Cloud - [**Azure**](https://azure.microsoft.com/en-us/)
+* Infrastructure as Code - [**Terraform**](https://www.terraform.io/)
+* Containerization - [**Docker**](https://www.docker.com/)
+* Container Orchestration - [**Kubernetes**](https://kubernetes.io/)
+* Monitoring - [**Prometheus**](https://prometheus.io), [**Grafana**](https://grafana.com/)
+* Workflow Orchestration - [**Airflow**](https://airflow.apache.org/)
+* Messaging & Stream Processing - [**Kafka**](https://kafka.apache.org/)
+* Data Storage - [**CosmosDB**](https://azure.microsoft.com/en-us/products/cosmos-db), [**MongoDB**](https://www.mongodb.com)
+* Languages - [**Python**](https://www.python.org/)
+
 
 ## Architecture
 
 ![Alt text](./architecture.png)
+
 
 ## Prerequisites
 
