@@ -6,6 +6,9 @@ import datetime as dt
 
 
 def parse_message_into_document(message: dict):
+    """
+    Parse a message received from Kafka and return a document to be stored in MongoDB.
+    """
     document = parse_sensor_data(message.value().decode("utf-8"))
     timestamp = dt.datetime.fromtimestamp(float(message.key().decode("utf-8")))
     document["timestamp"] = timestamp
@@ -26,16 +29,16 @@ def parse_sensor_data(data_str: str):
 
 
 def main():
+    # Connect to MongoDB
     mongodb_connection_string = os.environ.get("MONGODB_CONNECTION_STRING")
     client = pymongo.MongoClient(mongodb_connection_string)
     db = client["streamiotcosmosdb"]
     collection = db.sensors
 
+    # Set-up Kafka consumer
     config = Config.get()
     config["group.id"] = "sensor_group"
     consumer = Consumer(config)
-
-    # Subscribe to the topic
     consumer.subscribe(["sensors"])
 
     try:

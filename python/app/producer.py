@@ -9,6 +9,14 @@ N_SAMPLES = 20
 
 
 class RandomSensorDataGenerator:
+    """
+    A generator for simulating random sensor data.
+
+    This class is designed to produce random sensor data based on a Gaussian distribution with user-defined
+    means and standard deviations. The generated data is returned as a comma-separated string of floating-point
+    numbers rounded to two decimal places. For example: "1.24,45.67,18.45,..."
+    """
+
     def __init__(self, n_samples: int):
         self.n_samples = n_samples
         self.means = np.random.uniform(10, 90, N_SAMPLES)
@@ -35,7 +43,6 @@ def delivery_report(err, msg) -> None:
 def main():
     config = Config.get()
     producer = Producer(config)
-
     generator = RandomSensorDataGenerator(n_samples=N_SAMPLES)
 
     try:
@@ -47,14 +54,12 @@ def main():
                 value=sensor_data,
                 callback=delivery_report,
             )
-            # Wait for any outstanding messages to be delivered and delivery reports to be received.
             producer.poll(0)
             time.sleep(1)
 
     except KeyboardInterrupt:
         pass
     finally:
-        # Wait for any outstanding messages to be delivered and delivery reports to be received.
         producer.flush()
 
 

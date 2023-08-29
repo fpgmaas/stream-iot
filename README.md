@@ -8,7 +8,7 @@ Welcome to **stream-iot**! This project contains an example of an end-to-end wor
 
 ## Architecture
 
-![Alt text](./architecture2.png)
+![Alt text](./architecture.png)
 
 ## Prerequisites
 
