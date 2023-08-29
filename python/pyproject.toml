@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "floapp001"
+name = "streamiot"
 version = "0.0.1"
-description = "Python code belonging to the app called floapp001."
+description = "Python code belonging to the app called streamiot."
 authors = ["Florian Maas <fpgmaas@gmail.com>"]
 license = "MIT"
 

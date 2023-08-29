@@ -3,7 +3,7 @@
 Locally, login to the AKS cluster:
 
 ```sh
-az aks get-credentials --resource-group floapp001-rg --name floapp001aks
+az aks get-credentials --resource-group streamiot-rg --name streamiotaks
 ```
 
 Then, create a namespace called Kafka:

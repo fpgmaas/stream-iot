@@ -1,2 +1,2 @@
-app_name = "floapp001"
+app_name = "streamiot"
 location = "westeurope"

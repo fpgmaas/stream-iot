@@ -20,6 +20,6 @@ with DAG(
 ) as dag:
     simple_task = KubernetesPodOperator(
         task_id="produce",
-        image="floapp001acr.azurecr.io/floapp001:latest",
+        image="streamiotacr.azurecr.io/streamiot:latest",
         cmds=["python", "app/producer.py"],
     )

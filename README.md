@@ -1,4 +1,4 @@
-# kafka-dev
+# stream-iot
 
 ![Alt text](./architecture2.png)
 

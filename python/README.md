@@ -12,8 +12,8 @@ Locally, add it to `python/.env`:
 
 ```
 export COSMOSDB_CONNECTION_STRING=$(az cosmosdb keys list \
-    --name floapp001cosmosdb \
-    --resource-group floapp001-rg \
+    --name streamiotcosmosdb \
+    --resource-group streamiot-rg \
     --type connection-strings \
     --query "connectionStrings[?description=='Primary MongoDB Connection String'].connectionString" \
     --output tsv)
@@ -47,7 +47,7 @@ kubectl get secret -n kafka $CLUSTER_NAME-cluster-ca-cert -o jsonpath='{.data.ca
 Now, to build the Docker image:
 
 ```sh
-docker build -t floapp001 .
+docker build -t streamiot .
 ```
 
 To run the **producer**:
@@ -55,7 +55,7 @@ To run the **producer**:
 ```sh
 docker run \
     --env-file ./.env \
-    -v $(pwd)/ca.crt:/code/ca.crt floapp001 \
+    -v $(pwd)/ca.crt:/code/ca.crt streamiot \
     poetry run python -u app/producer.py
 ```
 
@@ -64,7 +64,7 @@ To run the **consumer**:
 ```sh
 docker run \
     --env-file ./.env \
-    -v $(pwd)/ca.crt:/code/ca.crt floapp001 \
+    -v $(pwd)/ca.crt:/code/ca.crt streamiot \
     poetry run python -u app/consumer.py
 ```
 
@@ -74,5 +74,5 @@ To spin up the container in interactive mode:
 docker run --rm -it \
     --env-file ./.env \
    -v $(pwd)/ca.crt:/code/ca.crt \
-    --entrypoint bash floapp001
+    --entrypoint bash streamiot
 ```

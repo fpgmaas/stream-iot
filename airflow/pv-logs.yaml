@@ -19,8 +19,8 @@ spec:
     readOnly: false
     volumeHandle: airflow-logs-1
     volumeAttributes:
-      resourceGroup: floapp001-rg
-      storageAccount: floapp001
+      resourceGroup: streamiot-rg
+      storageAccount: streamiot
       containerName: airflow-logs
     nodeStageSecretRef:
       name: storage-account-credentials

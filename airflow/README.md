@@ -45,13 +45,13 @@ First, add the storage account credentials as a secret. These credentials are ne
 
 ```sh
 export STORAGE_ACCOUNT_KEY=$(az storage account keys list \
--g floapp001-rg \
--n floapp001 \
+-g streamiot-rg \
+-n streamiot \
 --query '[0]'.value \
 -o tsv)
 
 kubectl create secret generic -n airflow storage-account-credentials \
---from-literal azurestorageaccountname=floapp001 \
+--from-literal azurestorageaccountname=streamiot \
 --from-literal azurestorageaccountkey=$STORAGE_ACCOUNT_KEY \
 --type=Opaque
 ```
@@ -75,8 +75,8 @@ Fnally, our future DAG's will need access to out CosmosDB instance. In order to 
 
 ```sh
 export COSMOSDB_CONNECTION_STRING=$(az cosmosdb keys list \
-    --name floapp001cosmosdb \
-    --resource-group floapp001-rg\
+    --name streamiotcosmosdb \
+    --resource-group streamiot-rg\
     --type connection-strings \
     --query "connectionStrings[?description=='Primary MongoDB Connection String'].connectionString" \
     --output tsv)

@@ -28,7 +28,7 @@ def parse_sensor_data(data_str: str):
 def main():
     cosmosdb_connection_string = os.environ.get("COSMOSDB_CONNECTION_STRING")
     client = pymongo.MongoClient(cosmosdb_connection_string)
-    db = client["floapp001cosmosdb"]
+    db = client["streamiotcosmosdb"]
     collection = db.sensors
 
     config = Config.get()

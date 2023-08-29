@@ -6,7 +6,7 @@ on:
 
 jobs:
   push-to-acr:
-    
+
     defaults:
       run:
         shell: bash
@@ -20,15 +20,15 @@ jobs:
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          login-server: floapp001acr.azurecr.io
+          login-server: streamiotacr.azurecr.io
           username: ${{ secrets.AZURE_AD_CLIENT_ID }}
           password: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
 
       - name: Build Docker image
         run: |
-          docker build -t floapp001 .
+          docker build -t streamiot .
 
       - name: Push Docker image to Azure Container Registry
         run: |
-          docker tag floapp001 floapp001acr.azurecr.io/floapp001:latest
-          docker push -a floapp001acr.azurecr.io/floapp001
+          docker tag streamiot streamiotacr.azurecr.io/streamiot:latest
+          docker push -a streamiotacr.azurecr.io/streamiot

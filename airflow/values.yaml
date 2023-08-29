@@ -29,7 +29,7 @@ pgbouncer:
 dags:
   gitSync:
     enabled: true
-    repo: git@github.com:fpgmaas/kafka-dev.git
+    repo: git@github.com:fpgmaas/stream-iot.git
     branch: main
     rev: HEAD
     depth: 1
