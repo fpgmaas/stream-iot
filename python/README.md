@@ -11,14 +11,14 @@ Push the Docker image to the Container Registry by running the `Push Docker imag
 Locally, add it to `python/.env`:
 
 ```
-export COSMOSDB_CONNECTION_STRING=$(az cosmosdb keys list \
+export MONGODB_CONNECTION_STRING=$(az cosmosdb keys list \
     --name streamiotcosmosdb \
     --resource-group streamiot-rg \
     --type connection-strings \
     --query "connectionStrings[?description=='Primary MongoDB Connection String'].connectionString" \
     --output tsv)
 
-echo "COSMOSDB_CONNECTION_STRING=\"$COSMOSDB_CONNECTION_STRING\"" > .env
+echo "MONGODB_CONNECTION_STRING=\"$MONGODB_CONNECTION_STRING\"" > .env
 echo "ENVIRONMENT=local" >> .env
 ```
 
@@ -27,7 +27,7 @@ Also add it as kubernetes secret in airflow namespace.
 ```
 kubectl create secret generic \
     -n airflow cosmosdb-connection-string \
-    --from-literal=cosmosdb-connection-string=$COSMOSDB_CONNECTION_STRING
+    --from-literal=cosmosdb-connection-string=$MONGODB_CONNECTION_STRING
 ```
 
 Additionally, add the external IP of the Kafka cluster's load balancer to `LocalConfig` in `python/app/config.py`. It can be found with the following command:

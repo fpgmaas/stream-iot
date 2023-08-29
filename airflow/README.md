@@ -74,7 +74,7 @@ Fnally, our future DAG's will need access to out CosmosDB instance. In order to 
 
 
 ```sh
-export COSMOSDB_CONNECTION_STRING=$(az cosmosdb keys list \
+export MONGODB_CONNECTION_STRING=$(az cosmosdb keys list \
     --name streamiotcosmosdb \
     --resource-group streamiot-rg\
     --type connection-strings \
@@ -83,7 +83,7 @@ export COSMOSDB_CONNECTION_STRING=$(az cosmosdb keys list \
 
 kubectl create secret generic \
     -n airflow cosmosdb-connection-string \
-    --from-literal=COSMOSDB_CONNECTION_STRING=$COSMOSDB_CONNECTION_STRING
+    --from-literal=MONGODB_CONNECTION_STRING=$MONGODB_CONNECTION_STRING
 ```
 
 ## Accessing the UI
