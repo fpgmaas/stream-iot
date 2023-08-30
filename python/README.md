@@ -23,8 +23,8 @@ kubectl create secret generic \
 
 ## Local development
 
-It is also possible to run the Kafka consumer and producer locally using Docker. To do so, start by
-creating the file `python/.env` with the following contents:
+It is also possible to run the Kafka consumer and producer locally using Docker. To do so, start by navigating into the `python` directory.
+There, create a `.env` file with the following command:
 
 ```
 export MONGODB_CONNECTION_STRING=$(az cosmosdb keys list \
@@ -38,7 +38,7 @@ echo "MONGODB_CONNECTION_STRING=\"$MONGODB_CONNECTION_STRING\"" > .env
 echo "ENVIRONMENT=local" >> .env
 ```
 
-Additionally, add the external IP of the Kafka cluster's load balancer to `LocalConfig` in `python/app/config.py`.
+Additionally, manually add the external IP of the Kafka cluster's load balancer to `LocalConfig` in `app/config.py`.
 It can be found with the following command:
 
 ```sh
@@ -46,7 +46,7 @@ export CLUSTER_NAME=my-cluster
 kubectl get service/$CLUSTER_NAME-kafka-external-bootstrap --output=jsonpath='{.status.loadBalancer.ingress[0].ip}' -n kafka
 ```
 
-We also download the certificate to our `python` directory.
+We also download the certificate to our `python` directory:
 
 ```sh
 export CLUSTER_NAME=my-cluster

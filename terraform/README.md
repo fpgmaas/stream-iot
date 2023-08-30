@@ -40,3 +40,12 @@ For local development, initialize the project with:
 ```sh
 terraform init -backend=false
 ```
+
+It is also possible to set the required environment variables to authenticate as the Service Principal locally (although not recommended). In order to do so, run:
+
+```sh
+export ARM_CLIENT_ID=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["appId"])'`
+export ARM_CLIENT_SECRET=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["password"])'`
+export ARM_TENANT_ID=`cat credentials.json | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["tenant"])'`
+export ARM_SUBSCRIPTION_ID=`az account show --query id -o tsv`
+```
