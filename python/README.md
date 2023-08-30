@@ -17,8 +17,8 @@ export MONGODB_CONNECTION_STRING=$(az cosmosdb keys list \
     --output tsv)
 
 kubectl create secret generic \
-    -n airflow cosmosdb-connection-string \
-    --from-literal=cosmosdb-connection-string=$MONGODB_CONNECTION_STRING
+    -n airflow mongodb-connection-string \
+    --from-literal=mongodb-connection-string=$MONGODB_CONNECTION_STRING
 ```
 
 ## Local development

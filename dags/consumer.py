@@ -18,7 +18,7 @@ memory_request = k8s.V1ResourceRequirements(
     }
 )
 
-# Node affinity ensures that the pod runs on nodes with specific labels
+# Node affinity ensures that the pod runs on 'application' nodes
 affinity = V1Affinity(
     node_affinity=V1NodeAffinity(
         required_during_scheduling_ignored_during_execution=V1NodeSelector(
@@ -38,8 +38,8 @@ affinity = V1Affinity(
 mongodb_connection_string = Secret(
     deploy_type="env",
     deploy_target="MONGODB_CONNECTION_STRING",
-    secret="cosmosdb-connection-string",  # noqa: S106
-    key="cosmosdb-connection-string",
+    secret="mongodb-connection-string",  # noqa: S106
+    key="mongodb-connection-string",
 )
 
 default_args = {

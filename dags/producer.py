@@ -17,7 +17,7 @@ memory_request = k8s.V1ResourceRequirements(
     }
 )
 
-# Node affinity ensures that the pod runs on nodes with specific labels
+# Node affinity ensures that the pod runs on 'application' nodes
 affinity = V1Affinity(
     node_affinity=V1NodeAffinity(
         required_during_scheduling_ignored_during_execution=V1NodeSelector(
