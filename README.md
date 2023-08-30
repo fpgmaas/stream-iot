@@ -3,7 +3,7 @@
 Welcome to **stream-iot**! This project contains an example of an end-to-end workflow for real-time IoT data processing.
 The workflow consists of mocking sensor data, channeling it through Kafka, and then storing the parsed data in a MongoDB database.
 
-I hope that this project can help others get started on similar projects. At the same time, I am sure I can learn from others viewing this project. If you have feedback or improvement suggestions, please [create an issue](https://github.com/fpgmaas/stream-iot/issues/new) in this repository.
+I started this project as a way to learn and get some initial hands-on experience with Kafka. I hope that this project can help others get started on similar projects. At the same time, I am sure I can learn from others viewing this project. If you have feedback or improvement suggestions, please [create an issue](https://github.com/fpgmaas/stream-iot/issues/new) in this repository.
 
 
 ## Tools & Technologies
