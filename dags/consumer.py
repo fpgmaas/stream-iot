@@ -2,8 +2,38 @@ from datetime import datetime
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.kubernetes.secret import Secret
+from kubernetes.client import (
+    V1Affinity,
+    V1NodeAffinity,
+    V1NodeSelector,
+    V1NodeSelectorRequirement,
+    V1NodeSelectorTerm,
+)
 from kubernetes.client import models as k8s
 
+# Memory requests for the Kubernetes pod
+memory_request = k8s.V1ResourceRequirements(
+    requests={
+        "memory": "1G",
+    }
+)
+
+# Node affinity ensures that the pod runs on nodes with specific labels
+affinity = V1Affinity(
+    node_affinity=V1NodeAffinity(
+        required_during_scheduling_ignored_during_execution=V1NodeSelector(
+            node_selector_terms=[
+                V1NodeSelectorTerm(
+                    match_expressions=[
+                        V1NodeSelectorRequirement(
+                            key="agentpool", operator="In", values="application"
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+)
 
 mongodb_connection_string = Secret(
     deploy_type="env",
@@ -18,6 +48,7 @@ default_args = {
     "image_pull_policy": "Always",
     "secrets": [mongodb_connection_string],
     "env_vars": [k8s.V1EnvVar(name="ENVIRONMENT", value="cluster")],
+    "affinity": affinity,
 }
 
 with DAG(
@@ -32,4 +63,5 @@ with DAG(
         task_id="consume",
         image="streamiotacr.azurecr.io/streamiot:latest",
         cmds=["python", "app/consumer.py"],
+        container_resources=memory_request,
     )
