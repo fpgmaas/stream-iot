@@ -1,2 +1,2 @@
 app_name = "streamiot"
-location = "westeurope"
+location = "eastus"

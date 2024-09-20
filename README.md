@@ -34,7 +34,6 @@ I started this project as a way to learn and get some initial hands-on experienc
 Follow the installation instructions in the README's of these directories in order:
 
 - [terraform](./terraform/README.md#installation)
-- [kafka](./kafka/README.md#installation)
 - [airflow](./airflow/README.md#installation)
 - [python](./python/README.md)
 - [monitoring](./monitoring/README.md) (optional)
