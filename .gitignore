@@ -4,3 +4,4 @@ credentials.json
 
 ca.crt
 ca.password
+.DS_Store
